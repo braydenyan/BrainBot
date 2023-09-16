@@ -600,7 +600,7 @@ progress {
 }
 
 .img-fluid {
-  max-width: 25%;
+  max-width: 72%;
   height: auto;
 }
 
@@ -11326,7 +11326,7 @@ header.masthead {
   overflow: hidden;
   padding-top: calc(7rem + 72px);
   padding-bottom: 7rem;
-  background: linear-gradient(180deg, #0072FF 0%, #71E2FF 100%);
+  background: linear-gradient(180deg, #000000 0%, #000000 100%);
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: scroll;
