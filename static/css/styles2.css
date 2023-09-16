@@ -5757,6 +5757,12 @@ textarea.form-control-lg {
     border-radius: 0;
   }
 }
+
+.footer {
+  bottom: 0%;
+  position: fixed;
+}
+
 .tooltip {
   position: absolute;
   z-index: 1080;
@@ -6964,6 +6970,10 @@ textarea.form-control-lg {
 
 .mw-100 {
   max-width: 100% !important;
+}
+
+.mw-25 {
+  max-width: 25% !important;
 }
 
 .mw-5 {
