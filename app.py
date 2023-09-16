@@ -1,22 +1,29 @@
 from flask import Flask, render_template, request, redirect, url_for, send_from_directory, flash
 import os
-import os
+import secrets
+import atexit
 from werkzeug.utils import secure_filename
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
 
+class Config:
+    SECRET_KEY = secrets.token_hex(16)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///comments.db'
 
 class CommentForm(FlaskForm):
     text = StringField('Comment', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 app = Flask(__name__)
+app.config.from_object(Config)
 UPLOAD_FOLDER = 'static/uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///comments.db'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 db = SQLAlchemy(app)
 
 class Comment(db.Model):
@@ -26,6 +33,12 @@ class Comment(db.Model):
 def create_db():
     with app.app_context():
         db.create_all()
+
+def cleanup():
+    with app.app_context():
+        db.session.query(Comment).delete()
+        db.session.commit()
+atexit.register(cleanup)
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -59,7 +72,10 @@ def upload():
         
 
         file_url = url_for('uploaded_file', filename=filename)
-        return render_template('result.html', file_url=file_url)
+
+        form = CommentForm()
+
+        return render_template('result.html', file_url=file_url, form=form)
     else:
         return 'no such file type'
 
@@ -70,7 +86,8 @@ def uploaded_file(filename):
 @app.route('/result')
 def result():
     comments = Comment.query.all()
-    return render_template('result.html', comments=comments)
+    form = CommentForm()
+    return render_template('result.html', comments=comments,form=form)
 
 @app.route('/submit_comment', methods=['POST'])
 def submit_comment():
@@ -83,7 +100,6 @@ def submit_comment():
         flash('Comment submitted successfully!', 'success')
         return redirect(url_for('result'))
     return render_template('result.html', form=form, comments=Comment.query.all())
-
 
 if __name__ == '__main__':
     create_db()
