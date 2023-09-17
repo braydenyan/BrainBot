@@ -6,5 +6,5 @@ flask_sqlalchemy
 transformers
 pillow
 gunicorn
-torch==1.8.1+cpu 
+torch==1.13.0+cpu 
 torchvision==0.9.1+cpu
