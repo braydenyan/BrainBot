@@ -6,73 +6,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Name Home</title>
+    <!-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> -->
+    <!-- Font Awesome icons (free version)-->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts-->
-    <title>Uplaod Success</title>
-    <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900"
+    <link href="https://fonts.googleapis.com/css?family=Impact:100,200,300,400,500,600,700,800,900" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Impact:100,100i,300,300i,400,400i,700,700i,900,900i"
         rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i"
-        rel="stylesheet" />
-    <link href="/static/css/styles.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="static/css/styles2.css" rel="stylesheet" />
 </head>
 
-<body id="page-top">
+<body id="page-top" class=" bg-black">
+    <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
         <div class="container px-5">
             <a class="navbar-brand" href="/">App Name</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span
-                    class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
-
-                    <li class="nav-item"><a class="nav-link" href="/upload">Submit Your Image for Testing</a></li>
-
-                </ul>
-            </div>
+            <a href="/upload" class="navbar-brand">Upload Again</a>
         </div>
     </nav>
 
-    <section id='scroll'>
+    <section id='scroll' class="bg-black">
         <br>
         <br>
         <br>
-        <div class="container ">
-            <div class="jumbotron">
-                <h1>Upload Successfully</h1>
-                <h4>Picture Uploaded</h4>
+        <div class="container bg-black">
+            <div class="">
+                <h1 style="color:#FFFFFF;">Upload Successfully</h1>
+                <h4 style="color:#FFFFFF;">Picture Uploaded</h4>
                 <img src="{{ file_url }}" alt="Uploaded Picture">
                 <br>
             </div>
         </div>
 
-        <h2>Add a Comment</h2>
-        <form method="POST" action="/submit_comment">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.text.label(class="form-control-label") }}
-                {{ form.text(class="form-control", placeholder="Add your comment here...") }}
+        <div class="container bg-black">
+            <div class="jumbotron">
+                <h2 style="color:#FFFFFF;">Add an Evaluation</h2>
+                <form method="POST" action="/submit_comment">
+                    {{ form.hidden_tag() }}
+                    <div class="form-group">
+                        {{ form.text.label(class="form-control-label") }}
+                        {{ form.text(class="form-control", placeholder="Add your comment here...") }}
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="color:#FFFFFF;">Submit</button>
+                </form>
+                <h2 style="color:#FFFFFF;">Results</h2>
+                <br>
+                <ul>
+                    {% for comment in comments %}
+                    <li style="color: white;">{{ comment.text }}</li>
+                    {% endfor %}
+                </ul>
+                
+                <br>
+                <br>
+                <br>
             </div>
-            <button type="submit" class="btn btn-primary">Submit Comment</button>
-        </form>
+        </div>
 
-        <h2>Comments</h2>
-        <ul>
-            {% for comment in comments %}
-            <li>{{ comment.text }}</li>
-            {% endfor %}
-        </ul>
-        <p><a href="/">Return</a></p>
     </section>
 </body>
-<footer class="py-5 bg-black">
+<footer class="py-2 bg-black footer">
     <div class="container px-5">
-        <p class="m-0 text-center text-white small">Copyright &copy; SkinsAI 2022</p>
+        <img class="img-fluid mw-5" src="static/img/pitt.png" alt="..." />
+        <p class="mx-3 text-center text-white small d-md-inline-block">Copyright &copy; Name 2023</p>
     </div>
 </footer>
-<!-- Bootstrap core JS-->
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
