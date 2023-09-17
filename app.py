@@ -98,11 +98,13 @@ def upload():
                 score = out['score']
                 label = out['label']
             i+=1
-        
-        session['bmap_s'] = bmap
 
+        session['bmap_s'] = bmap
+        session['label'] = label
+        
         file_url = session.get('file_path')
         bmap = session.get('bmap_s')
+        label = session.get('label')
 
         return render_template('result.html', file_url=file_url, form=form, label=label, bmap_s=bmap)
     else:
@@ -118,7 +120,8 @@ def result():
     form = CommentForm()
     file_url = session.get('file_path')
     bmap_s = session.get('bmap_s')
-    return render_template('result.html', comments=comments,form=form, file_url=file_url, bmap_s=bmap_s)
+    label = session.get('label')
+    return render_template('result.html', comments=comments,form=form, label=label, file_url=file_url, bmap_s=bmap_s)
 
 @app.route('/submit_comment', methods=['POST'])
 def submit_comment():
