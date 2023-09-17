@@ -5,3 +5,4 @@ wtforms
 flask_sqlalchemy
 transformers
 pillow
+gunicorn
