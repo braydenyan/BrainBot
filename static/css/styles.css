@@ -3031,8 +3031,8 @@ textarea.form-control-lg {
 
 .btn-primary {
   color: #fff;
-  background-color: #ee0979;
-  border-color: #ee0979;
+  background-color: crimson;
+  border-color: crimson;
 }
 .btn-primary:hover {
   color: #fff;
@@ -11335,7 +11335,6 @@ header.masthead {
   position: relative;
   overflow: hidden;
   padding-top: calc(7rem + 72px);
-  padding-bottom: 7rem;
   background: linear-gradient(180deg, #000000 0%, #000000 100%);
   background-repeat: no-repeat;
   background-position: center center;
