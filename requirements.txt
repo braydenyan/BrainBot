@@ -1,0 +1,7 @@
+flask
+werkzeug
+flask_wtf
+wtforms
+flask_sqlalchemy
+transformers
+pillow
