@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, flash
+from flask import Flask, session, render_template, request, redirect, url_for, send_from_directory, flash
 import os
 import secrets
 import atexit
@@ -7,6 +7,9 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 from flask_sqlalchemy import SQLAlchemy
+
+from transformers import pipeline
+from PIL import Image
 
 class Config:
     SECRET_KEY = secrets.token_hex(16)
@@ -68,14 +71,40 @@ def upload():
     if file and allowed_file(file.filename):
 
         filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
 
         file_url = url_for('uploaded_file', filename=filename)
+        session['file_path'] = file_path
 
         form = CommentForm()
 
-        return render_template('result.html', file_url=file_url, form=form)
+        image = Image.open(file_path)
+
+        access_token = "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"
+
+        classifier = pipeline("image-classification", model="DifeiT/rsna_intracranial_hemorrhage_detection", token=access_token)
+
+        score = 0
+        label = ''
+
+        i = 0
+        bmap = {}
+        for out in classifier(image):
+            key = out['label']
+            value = out['score']
+            bmap[key] = value
+            if out['score'] > score:
+                score = out['score']
+                label = out['label']
+            i+=1
+        
+        session['bmap_s'] = bmap
+
+        file_url = session.get('file_path')
+        bmap = session.get('bmap_s')
+
+        return render_template('result.html', file_url=file_url, form=form, label=label, bmap_s=bmap)
     else:
         return 'no such file type'
 
@@ -87,7 +116,9 @@ def uploaded_file(filename):
 def result():
     comments = Comment.query.all()
     form = CommentForm()
-    return render_template('result.html', comments=comments,form=form)
+    file_url = session.get('file_path')
+    bmap_s = session.get('bmap_s')
+    return render_template('result.html', comments=comments,form=form, file_url=file_url, bmap_s=bmap_s)
 
 @app.route('/submit_comment', methods=['POST'])
 def submit_comment():
